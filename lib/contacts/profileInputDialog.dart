@@ -9,7 +9,7 @@ class ProfileInputDialog extends StatefulWidget {
   final User user;
   final bool isAdd;
 
-  ProfileInputDialog({Key key, this.user, this.isAdd}) : super(key: key);
+  ProfileInputDialog({super.key, required this.user, required this.isAdd});
 
   @override
   State<StatefulWidget> createState() =>
@@ -102,42 +102,41 @@ class _ProfileInputDialog extends State<ProfileInputDialog> {
         ),
       ),
       actions: <Widget>[
-        FlatButton(
+        ElevatedButton(
           child: Text("Close"),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        !this.isAdd
-            ? FlatButton(
-                child: Text("Delete"),
-                onPressed: () async {
-                  GraphQLClient _client = graphQLConfiguration.clientToQuery();
-                  QueryResult result = await _client.mutate(
-                    MutationOptions(
-                      document: addMutation.deleteUser(txtId.text),
-                    ),
-                  );
-                  if (!result.hasErrors) Navigator.of(context).pop();
-                },
-              )
-            : null,
-        FlatButton(
+        if (!this.isAdd)
+          ElevatedButton(
+            child: Text("Delete"),
+            onPressed: () async {
+              GraphQLClient _client = graphQLConfiguration.clientToQuery();
+              QueryResult result = await _client.mutate(
+                MutationOptions(
+                  document: addMutation.deleteUser(txtId.text),
+                ),
+              );
+              if (!result.hasException) Navigator.of(context).pop();
+            },
+          ),
+        ElevatedButton(
           child: Text(this.isAdd ? "Add" : "Edit"),
           onPressed: () async {
-            if (
-                txtName.text.isNotEmpty &&
+            if (txtName.text.isNotEmpty &&
                 txtLastName.text.isNotEmpty &&
                 txtPhone.text.isNotEmpty) {
               if (this.isAdd) {
                 GraphQLClient _client = graphQLConfiguration.clientToQuery();
                 QueryResult result = await _client.mutate(
                   MutationOptions(
-                    document: addMutation.createUser(txtName.text,
+                    document: addMutation.createUser(
+                      txtName.text,
                       txtLastName.text,
                       int.parse(txtPhone.text),
                     ),
                   ),
                 );
-                if (!result.hasErrors) {
+                if (!result.hasException) {
                   txtId.clear();
                   txtName.clear();
                   txtLastName.clear();
@@ -156,7 +155,7 @@ class _ProfileInputDialog extends State<ProfileInputDialog> {
                     ),
                   ),
                 );
-                if (!result.hasErrors) {
+                if (!result.hasException) {
                   txtId.clear();
                   txtName.clear();
                   txtLastName.clear();

@@ -1,6 +1,9 @@
+import 'package:graphql_flutter/graphql_flutter.dart';
+import "package:gql/ast.dart";
+
 class QueryMutation {
-  String createUser(String name, String lastName, int phone) {
-    return """
+  DocumentNode createUser(String name, String lastName, int phone) {
+    return gql("""
       mutation{
           createUser(
             data: {
@@ -11,11 +14,11 @@ class QueryMutation {
             lastName
           }
       }
-    """;
+    """);
   }
 
-  String getAll(){
-    return """ 
+  DocumentNode getAll() {
+    return gql(""" 
       {
         users{
           id
@@ -24,11 +27,11 @@ class QueryMutation {
           phone
         }
       }
-    """;
+    """);
   }
 
-  String deleteUser(id){
-    return """
+  DocumentNode deleteUser(id) {
+    return gql("""
       mutation{
         deleteUser( where: {
           id: "$id"
@@ -37,11 +40,11 @@ class QueryMutation {
           lastName
         }
       } 
-    """;
+    """);
   }
 
-  String updateUser(String id, String name, String lastName, int phone){
-    return """
+  DocumentNode updateUser(String id, String name, String lastName, int phone) {
+    return gql("""
       mutation{
           updateUser(
             data: {
@@ -55,6 +58,6 @@ class QueryMutation {
             lastName
           }
       }    
-     """;
+     """);
   }
 }

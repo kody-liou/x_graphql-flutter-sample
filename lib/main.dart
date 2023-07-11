@@ -7,11 +7,11 @@ import "contacts/contactList.dart";
 GraphQLConfiguration graphQLConfiguration = GraphQLConfiguration();
 
 void main() => runApp(
-  GraphQLProvider(
-    client: graphQLConfiguration.client,
-    child: CacheProvider(child: MyApp()),
-  ),
-);
+      GraphQLProvider(
+        client: graphQLConfiguration.client,
+        child: CacheProvider(child: MyApp()),
+      ),
+    );
 
 class MyApp extends StatelessWidget {
   @override
